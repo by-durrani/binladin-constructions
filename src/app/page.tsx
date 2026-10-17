@@ -215,8 +215,9 @@ export default function Home() {
       </main>
       <footer className="border-t border-line">
         <div className="mx-auto flex max-w-7xl flex-col gap-4 px-5 py-8 sm:flex-row sm:items-center sm:justify-between sm:px-10">
-          <p className="display text-sm tracking-[0.18em] uppercase">
-            {site.name}
+          <p className="display text-sm tracking-[0.18em] uppercase flex gap-2 items-center">
+            <Image src={"/bin-ladin.svg"} alt="logo" height={40} width={20} />
+            <span className="mt-3">{site.name} </span>
           </p>
           <p className="text-xs tracking-[0.16em] text-muted uppercase">
             {site.city} · Houses, from the inside
