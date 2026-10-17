@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { site } from "@/data/site";
+import Image from "next/image";
 
 const links = [
   { href: "#rooms", label: "Rooms" },
@@ -30,15 +31,26 @@ export function Header() {
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:h-20 sm:px-8">
-        <a href="#top" className="display text-[0.95rem] tracking-[0.22em] uppercase">
-          {site.name}
+        <a
+          href="#ll"
+          onClick={(e) => {
+            e.preventDefault();
+            window.scrollTo({ behavior: "smooth", top: 0 });
+          }}
+          className="display text-[0.95rem] tracking-[0.22em] uppercase  flex gap-2 items-center  "
+        >
+          <Image src={"/bin-ladin.svg"} alt="logo" height={40} width={20} />
+          <span className="mt-3">{site.name} </span>
         </a>
-        <nav className="hidden items-center gap-10 md:flex" aria-label="Primary">
+        <nav
+          className="hidden items-center gap-10 md:flex"
+          aria-label="Primary"
+        >
           {links.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="label text-[0.65rem] text-foreground/70 transition-colors duration-200 hover:text-foreground"
+              className="label text-[0.65rem] text-black! transition-colors duration-200 "
             >
               {link.label}
             </a>

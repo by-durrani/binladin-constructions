@@ -1,10 +1,10 @@
 export const site = {
-  name: "Maison Atelier",
+  name: "BIN LADIN",
   tagline: "Houses built to be lived in.",
-  city: "Los Angeles",
-  phone: "+1 310 555 0148",
-  email: "visit@maisonatelier.co",
-  address: "418 North Harper Avenue, Los Angeles",
+  city: "Islamabad",
+  phone: "+92 3017758065",
+  email: "binladinconstructions@gmail.com",
+  address: "Faisal town Block A Salam tower, 204, Islamabad, 44000",
 };
 
 export const rooms = [
