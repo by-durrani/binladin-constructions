@@ -10,7 +10,7 @@ export default function Home() {
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <Threshold />
+      {/* <Threshold /> */}
       <Header />
       <main id="main" className="flex-1">
         <section
