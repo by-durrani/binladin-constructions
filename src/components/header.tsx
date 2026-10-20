@@ -27,7 +27,7 @@ export function Header() {
       className={`fixed inset-x-0 top-0 z-40 transition-[background,border-color] duration-300 ${
         scrolled || open
           ? "border-b border-line bg-background/90 backdrop-blur-md"
-          : "border-b border-transparent"
+          : "border-b border-line bg-background/90 backdrop-blur-md"
       }`}
     >
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:h-20 sm:px-8">
