@@ -14,7 +14,8 @@ export function Hero() {
 
   return (
     <HeroScroll
-      className="relative flex min-h-dvh flex-col overflow-hidden bg-ink"
+      // On phones the bottom padding keeps the marquee clear of the nav bar.
+      className="relative flex min-h-dvh flex-col overflow-hidden bg-ink pb-[calc(env(safe-area-inset-bottom,0px)+4.75rem)] md:pb-0"
       aria-label="Introduction"
     >
       <div className="hero-media absolute inset-0">
@@ -27,7 +28,7 @@ export function Hero() {
           className="hero-image object-cover"
         />
       </div>
-      <div className="absolute inset-0 bg-linear-to-t from-ink/85 via-ink/35 to-ink/15" />
+      <div className="absolute inset-0 bg-linear-to-t from-ink/90 via-ink/55 to-ink/25 md:from-ink/85 md:via-ink/35 md:to-ink/15" />
       <div className="absolute inset-0 hidden bg-linear-to-l from-ink/55 to-transparent lg:block" />
 
       {/* Architectural grid lines that grow down the page. */}
@@ -45,13 +46,13 @@ export function Hero() {
         <Blueprint className="w-full text-white/70" />
       </div>
 
-      <div className="hero-content shell relative flex flex-1 flex-col justify-end pt-24 pb-14 sm:pt-28 sm:pb-16">
+      <div className="hero-content shell relative flex flex-1 flex-col justify-end pt-10 pb-8 sm:pt-28 sm:pb-16">
         {/* Smaller screens: the drawing fills whatever space is left above
             the text, scaled to fit, and steps aside when that space is too
             small to read. */}
         <SizeGate
-          minHeight={110}
-          className="pointer-events-none relative mb-8 min-h-0 flex-1 lg:hidden"
+          minHeight={90}
+          className="pointer-events-none relative mb-6 min-h-0 flex-1 sm:mb-8 lg:hidden"
         >
           <Blueprint
             className="absolute inset-0 size-full text-white/50"
@@ -77,12 +78,14 @@ export function Hero() {
             </span>
           ))}
         </h1>
-        <p className="reveal hero-delay-copy mt-6 max-w-xl text-base leading-relaxed font-light text-white/85 sm:text-lg">
+        {/* Phones skip the paragraph: the marquee lists the services, and the
+            text competes with the photo on small screens. */}
+        <p className="reveal hero-delay-copy mt-6 hidden max-w-xl text-base leading-relaxed font-light text-white/85 sm:block sm:text-lg">
           {site.fullName} designs and builds houses and commercial spaces —
           grey structure, turnkey homes, finishing and renovation, delivered by
           one accountable team.
         </p>
-        <div className="reveal hero-delay-actions mt-10 flex flex-col gap-3 sm:flex-row">
+        <div className="reveal hero-delay-actions mt-8 flex flex-col gap-3 sm:mt-10 sm:flex-row">
           <Link href="/projects" className="btn btn-light">
             View our projects <ArrowRight className="size-4" />
           </Link>
