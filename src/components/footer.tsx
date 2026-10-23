@@ -81,7 +81,7 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-line">
-        <div className="shell flex flex-col gap-2 py-6 text-xs tracking-[0.16em] text-muted uppercase sm:flex-row sm:justify-between">
+        <div className="shell flex flex-col gap-2 pt-6 pb-28 text-xs tracking-[0.16em] text-muted uppercase sm:flex-row sm:justify-between md:pb-6">
           <p>© {site.fullName}</p>
           <p>{site.city} · Built to last</p>
         </div>

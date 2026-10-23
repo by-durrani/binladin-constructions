@@ -1,8 +1,10 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cinzel, Josefin_Sans } from "next/font/google";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
-import { ScrollReveal, ScrollScenes } from "@/components/motion";
+import { Intro, introScript } from "@/components/intro";
+import { MobileNav } from "@/components/mobile-nav";
+import { IntroSettle, ScrollReveal, ScrollScenes } from "@/components/motion";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { site } from "@/data/site";
 import "./globals.css";
@@ -34,13 +36,25 @@ export const metadata: Metadata = {
   },
 };
 
+export const viewport: Viewport = {
+  // Lets the bottom bar sit above the iPhone home indicator.
+  viewportFit: "cover",
+  themeColor: "#1c1915",
+};
+
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
       className={`${display.variable} ${body.variable} h-full antialiased`}
+      // The intro script adds .intro-seen to <html> before React hydrates.
+      suppressHydrationWarning
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: introScript }} />
+      </head>
       <body className="flex min-h-full flex-col bg-background text-foreground">
+        <Intro />
         <a className="skip-link" href="#main">
           Skip to content
         </a>
@@ -49,9 +63,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
           {children}
         </main>
         <Footer />
+        <MobileNav />
         <WhatsAppButton />
         <ScrollReveal />
         <ScrollScenes />
+        <IntroSettle />
       </body>
     </html>
   );

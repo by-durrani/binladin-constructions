@@ -1,6 +1,13 @@
 "use client";
 
-import { type ComponentProps, type ReactNode, useEffect, useRef } from "react";
+import { usePathname } from "next/navigation";
+import {
+  type ComponentProps,
+  type ReactNode,
+  Suspense,
+  useEffect,
+  useRef,
+} from "react";
 
 // Reveals every [data-reveal] element as it scrolls into view. Content is
 // visible by default; it is only hidden once this has run, so nothing is lost
@@ -220,5 +227,29 @@ export function SizeGate({
     <div ref={ref} className={className} data-fits="false" aria-hidden="true">
       {children}
     </div>
+  );
+}
+
+// First-load animations wait for the logo intro via --intro. Once the visitor
+// moves to another page that wait no longer applies, so clear it then —
+// not on a timer, which would jolt the hero animations still running.
+function IntroSettleInner() {
+  const pathname = usePathname();
+  const first = useRef(pathname);
+
+  useEffect(() => {
+    if (pathname !== first.current) {
+      document.documentElement.classList.add("intro-seen");
+    }
+  }, [pathname]);
+
+  return null;
+}
+
+export function IntroSettle() {
+  return (
+    <Suspense fallback={null}>
+      <IntroSettleInner />
+    </Suspense>
   );
 }

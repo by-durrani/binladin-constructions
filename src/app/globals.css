@@ -24,6 +24,12 @@
 
 :root {
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  /* How long first-load animations wait for the logo intro to lift. */
+  --intro: 1100ms;
+}
+
+:root.intro-seen {
+  --intro: 0ms;
 }
 
 @utility shell {
@@ -201,22 +207,23 @@
     opacity: 0;
     transform: translateY(18px);
     animation: rise 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    animation-delay: var(--intro);
   }
 
   .reveal-delay-1 {
-    animation-delay: 80ms;
+    animation-delay: calc(var(--intro) + 80ms);
   }
 
   .reveal-delay-2 {
-    animation-delay: 160ms;
+    animation-delay: calc(var(--intro) + 160ms);
   }
 
   .reveal-delay-3 {
-    animation-delay: 240ms;
+    animation-delay: calc(var(--intro) + 240ms);
   }
 
   .hero-image {
-    animation: ken 8s ease-out both;
+    animation: ken 8s ease-out var(--intro) both;
   }
 
   @media (min-width: 1024px) {
@@ -246,15 +253,15 @@
     display: inline-block;
     transform: translateY(110%);
     animation: word-up 1100ms var(--ease-out-soft) forwards;
-    animation-delay: calc(var(--i, 0) * 70ms + 250ms);
+    animation-delay: calc(var(--intro) + var(--i, 0) * 70ms + 250ms);
   }
 
   .hero-delay-copy {
-    animation-delay: 900ms;
+    animation-delay: calc(var(--intro) + 900ms);
   }
 
   .hero-delay-actions {
-    animation-delay: 1050ms;
+    animation-delay: calc(var(--intro) + 1050ms);
   }
 
   /* Parallax driven by --hero-progress (set by <HeroScroll>). */
@@ -272,7 +279,7 @@
     transform: scaleY(0);
     transform-origin: top;
     animation: grow-down 1600ms var(--ease-out-soft) forwards;
-    animation-delay: calc(var(--d, 0) * 120ms + 100ms);
+    animation-delay: calc(var(--intro) + var(--d, 0) * 120ms + 100ms);
   }
 
   /* Blueprint strokes draw from 0 to 1 (paths use pathLength="1"). */
@@ -280,13 +287,13 @@
     stroke-dasharray: 1;
     stroke-dashoffset: 1;
     animation: draw 1600ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
-    animation-delay: calc(var(--d, 0) * 130ms + 500ms);
+    animation-delay: calc(var(--intro) + var(--d, 0) * 130ms + 500ms);
   }
 
   .draw-fade {
     opacity: 0;
     animation: fade-in 900ms ease forwards;
-    animation-delay: calc(var(--d, 0) * 130ms + 500ms);
+    animation-delay: calc(var(--intro) + var(--d, 0) * 130ms + 500ms);
   }
 
   /* Set by <SizeGate>; decorative content stays out until it fits. */
@@ -296,7 +303,7 @@
 
   .scroll-cue {
     opacity: 0;
-    animation: fade-in 800ms ease 1600ms forwards;
+    animation: fade-in 800ms ease calc(var(--intro) + 1600ms) forwards;
   }
 
   .scroll-cue-bar {
@@ -414,6 +421,133 @@
   }
 }
 
+/* ---------- Logo intro and mobile bar ---------- */
+@layer components {
+  .intro {
+    position: fixed;
+    inset: 0;
+    z-index: 70;
+    display: grid;
+    place-items: center;
+    background: var(--ink);
+    color: var(--surface);
+    animation: intro-lift 800ms cubic-bezier(0.76, 0, 0.24, 1) 1050ms forwards;
+  }
+
+  .intro-seen .intro {
+    display: none;
+  }
+
+  .intro-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+  }
+
+  .intro-mark {
+    width: 2.6rem;
+    overflow: visible;
+  }
+
+  .intro-bar {
+    transform-box: fill-box;
+    transform-origin: bottom;
+    transform: scaleY(0);
+    animation: grow-up 650ms var(--ease-out-soft) 100ms forwards;
+  }
+
+  .intro-bar-2 {
+    animation-delay: 280ms;
+  }
+
+  .intro-word {
+    font-size: 1.05rem;
+    letter-spacing: 0.5em;
+    padding-left: 0.5em;
+    opacity: 0;
+    animation: intro-word 800ms var(--ease-out-soft) 420ms forwards;
+  }
+
+  .intro-line {
+    position: relative;
+    display: block;
+    width: 7rem;
+    height: 1px;
+    overflow: hidden;
+    background: color-mix(in srgb, var(--surface) 20%, transparent);
+  }
+
+  .intro-line::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--surface);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: grow-x 850ms cubic-bezier(0.65, 0, 0.35, 1) 200ms forwards;
+  }
+
+  .glass {
+    background: color-mix(in srgb, var(--surface) 62%, transparent);
+    -webkit-backdrop-filter: blur(18px) saturate(1.6);
+    backdrop-filter: blur(18px) saturate(1.6);
+    border: 1px solid rgba(255, 255, 255, 0.55);
+    box-shadow:
+      0 12px 40px -12px rgba(28, 25, 21, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.65);
+  }
+
+  .mobile-nav {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 0.75rem);
+    animation: nav-in 800ms var(--ease-out-soft) calc(var(--intro) + 350ms) both;
+  }
+}
+
+@keyframes intro-lift {
+  to {
+    transform: translateY(-100%);
+    visibility: hidden;
+  }
+}
+
+@keyframes intro-word {
+  from {
+    opacity: 0;
+    letter-spacing: 0.2em;
+  }
+  to {
+    opacity: 1;
+    letter-spacing: 0.5em;
+  }
+}
+
+@keyframes grow-up {
+  to {
+    transform: scaleY(1);
+  }
+}
+
+@keyframes grow-x {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes nav-in {
+  from {
+    opacity: 0;
+    transform: translateY(140%);
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
 @keyframes word-up {
   to {
     transform: translateY(0);
@@ -526,6 +660,29 @@
   .motion [data-reveal].is-visible img {
     scale: var(--rest-scale, 1);
     transition: none;
+  }
+
+  :root:not(.intro-seen) {
+    --intro: 500ms;
+  }
+
+  .intro {
+    animation: fade-out 400ms ease 500ms forwards;
+  }
+
+  .intro-bar,
+  .intro-line::after {
+    animation: none;
+    transform: none;
+  }
+
+  .intro-word {
+    animation: none;
+    opacity: 1;
+  }
+
+  .mobile-nav {
+    animation-name: fade-in;
   }
 
   /* Scroll-linked movement rests in place. */
