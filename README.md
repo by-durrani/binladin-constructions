@@ -74,9 +74,10 @@ filters update automatically.
 
 The contact form validates input on the server (`src/app/actions.ts`).
 
-- **With email configured**, enquiries are emailed to you through
-  [Resend](https://resend.com). Copy `.env.example` to `.env.local` and fill
-  in the values (set the same variables in your hosting dashboard).
+- **With email configured**, enquiries are emailed to you over SMTP with
+  [Nodemailer](https://nodemailer.com) (Gmail by default, using an app
+  password). Copy `.env.example` to `.env.local` and fill in `SMTP_USER` and
+  `SMTP_PASS` (set the same variables in your hosting dashboard).
 - **Without email configured**, the visitor is handed a pre-filled WhatsApp
   message to send to the company number instead. No enquiry is silently lost.
 

@@ -67,3 +67,33 @@ export function formatEnquiry(values: EnquiryValues) {
     .filter((line) => line !== null)
     .join("\n");
 }
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+export function formatEnquiryHtml(values: EnquiryValues) {
+  const rows = [
+    ["Name", values.name],
+    ["Phone", values.phone],
+    ["Email", values.email],
+    ["Project", values.projectType],
+    ["Location / plot", values.location],
+  ]
+    .filter(([, value]) => value)
+    .map(
+      ([label, value]) =>
+        `<tr><td style="padding:6px 16px 6px 0;color:#6b665e;white-space:nowrap">${label}</td><td style="padding:6px 0">${escapeHtml(value)}</td></tr>`,
+    )
+    .join("");
+
+  return `<div style="font-family:Arial,sans-serif;font-size:15px;line-height:1.5;color:#1c1a17">
+<p style="font-size:18px;margin:0 0 16px">New enquiry from ${escapeHtml(values.name)}</p>
+<table style="border-collapse:collapse">${rows}</table>
+<p style="margin:20px 0 0;white-space:pre-wrap">${escapeHtml(values.message)}</p>
+</div>`;
+}

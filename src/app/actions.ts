@@ -1,10 +1,12 @@
 "use server";
 
-import { whatsappHref } from "@/data/site";
+import nodemailer from "nodemailer";
+import { site, whatsappHref } from "@/data/site";
 import {
   type EnquiryState,
   type EnquiryValues,
   formatEnquiry,
+  formatEnquiryHtml,
   validateEnquiry,
 } from "@/lib/enquiry";
 
@@ -38,34 +40,33 @@ export async function sendEnquiry(
 
   const text = formatEnquiry(values);
   const whatsappUrl = whatsappHref(text);
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.ENQUIRY_TO_EMAIL;
+  const user = process.env.SMTP_USER;
+  const pass = process.env.SMTP_PASS;
 
-  // Without email credentials, finish the enquiry on WhatsApp instead.
-  if (!apiKey || !to) {
+  // Without SMTP credentials, finish the enquiry on WhatsApp instead.
+  if (!user || !pass) {
     return { status: "whatsapp", values, whatsappUrl };
   }
 
+  // Defaults suit Gmail with an app password; override for any other SMTP host.
+  const port = Number(process.env.SMTP_PORT || 465);
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST || "smtp.gmail.com",
+    port,
+    secure: port === 465,
+    auth: { user, pass },
+  });
+
   try {
-    const response = await fetch("https://api.resend.com/emails", {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        from:
-          process.env.ENQUIRY_FROM_EMAIL ??
-          "Website enquiries <onboarding@resend.dev>",
-        to: [to],
-        reply_to: values.email || undefined,
-        subject: `New enquiry: ${values.projectType} — ${values.name}`,
-        text,
-      }),
+    await transporter.sendMail({
+      // Gmail rewrites any other sender address to the signed-in account.
+      from: { name: `${site.fullName} Website`, address: user },
+      to: process.env.ENQUIRY_TO_EMAIL || user,
+      replyTo: values.email || undefined,
+      subject: `New enquiry: ${values.projectType} — ${values.name}`,
+      text,
+      html: formatEnquiryHtml(values),
     });
-    if (!response.ok) {
-      throw new Error(`Resend responded with ${response.status}`);
-    }
   } catch (error) {
     console.error("Failed to send enquiry email", error);
     return { status: "error", values, whatsappUrl };
