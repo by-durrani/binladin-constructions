@@ -338,7 +338,7 @@
   }
 
   .motion [data-reveal="image"] img {
-    scale: 1.18;
+    scale: calc(var(--rest-scale, 1) * 1.18);
     transition: scale 1800ms var(--ease-out-soft);
   }
 
@@ -357,12 +357,55 @@
   }
 
   .motion [data-reveal].is-visible img {
-    scale: 1;
+    scale: var(--rest-scale, 1);
   }
 
   .motion .no-transition,
   .motion .no-transition img {
     transition: none !important;
+  }
+}
+
+/* ---------- Scroll-linked motion (values from <ScrollScenes>) ---------- */
+@layer components {
+  .page-progress {
+    transform: scaleX(var(--page-progress, 0));
+  }
+
+  /* Words light up across the first half of the block's journey. */
+  .scroll-word {
+    opacity: clamp(
+      0.16,
+      calc((var(--progress, 1) - 0.18) / 0.4 * var(--n) - var(--i)),
+      1
+    );
+    transition: opacity 120ms linear;
+  }
+
+  /* Images drift inside their frames. Frames hold a slightly enlarged image
+     so the drift never shows an edge. */
+  .parallax {
+    --rest-scale: 1.14;
+  }
+
+  .parallax img {
+    scale: var(--rest-scale);
+    translate: 0 calc((var(--progress, 0.5) - 0.5) * -12%);
+  }
+
+  .kinetic-row {
+    transform: translate3d(calc(-8% - var(--progress, 0.5) * 22%), 0, 0);
+    will-change: transform;
+  }
+
+  .kinetic-row-reverse {
+    transform: translate3d(calc(-30% + var(--progress, 0.5) * 22%), 0, 0);
+  }
+
+  /* Solid, tinted type: Cinzel's overlapping contours show through a
+     text-stroke outline. */
+  .kinetic-outline {
+    color: color-mix(in srgb, var(--accent) 38%, transparent);
   }
 }
 
@@ -445,6 +488,10 @@
   .draw {
     animation: none !important;
     stroke-dashoffset: 0;
+  }
+
+  .page-progress {
+    display: none;
   }
 
   .scroll-cue-bar {

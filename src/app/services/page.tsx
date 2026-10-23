@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { CSSProperties } from "react";
 import { CtaBand } from "@/components/cta-band";
+import { KineticBand } from "@/components/kinetic-band";
 import { PageIntro } from "@/components/page-intro";
 import { faqs, processSteps, services } from "@/data/services";
 
@@ -58,6 +59,8 @@ export default function ServicesPage() {
           </article>
         ))}
       </section>
+
+      <KineticBand lines={["Design · Approvals · Structure ·", "Finishing · Handover ·"]} />
 
       <section className="bg-surface py-24 sm:py-32" aria-labelledby="process-heading">
         <div className="shell">

@@ -70,7 +70,7 @@ export default async function ProjectPage({
       </section>
 
       <div className="shell mt-10 sm:mt-14">
-        <div className="relative aspect-[4/3] overflow-hidden bg-line sm:aspect-[16/9]">
+        <div className="parallax relative aspect-[4/3] overflow-hidden bg-line sm:aspect-[16/9]" data-scroll>
           <Image
             src={project.cover.src}
             alt={project.cover.alt}
@@ -122,8 +122,9 @@ export default async function ProjectPage({
               <li
                 key={image.src}
                 data-reveal="image"
+                data-scroll
                 style={{ "--d": imageIndex % 3 === 0 ? 0 : (imageIndex % 3) - 1 } as CSSProperties}
-                className={`relative overflow-hidden bg-line ${
+                className={`parallax relative overflow-hidden bg-line ${
                   imageIndex % 3 === 0
                     ? "aspect-[4/3] sm:col-span-2 sm:aspect-[16/9]"
                     : "aspect-[4/5]"

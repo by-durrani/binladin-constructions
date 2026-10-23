@@ -15,8 +15,9 @@ export function ProjectCard({
   return (
     <article className="group relative">
       <div
-        className="zoom-frame relative aspect-[4/5] overflow-hidden bg-line"
+        className="zoom-frame parallax relative aspect-[4/5] overflow-hidden bg-line"
         data-reveal="image"
+        data-scroll
         style={{ "--d": index % 3 } as CSSProperties}
       >
         <Image

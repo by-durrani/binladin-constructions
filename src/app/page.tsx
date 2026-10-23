@@ -2,8 +2,10 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { CtaBand } from "@/components/cta-band";
 import { Hero } from "@/components/hero";
+import { KineticBand } from "@/components/kinetic-band";
 import { ArrowRight } from "@/components/icons";
 import { ProjectCard } from "@/components/project-card";
+import { ScrollText } from "@/components/scroll-text";
 import { featuredProjects } from "@/data/projects";
 import { processSteps, services } from "@/data/services";
 import { mapHref, phoneHref, principles, site } from "@/data/site";
@@ -41,12 +43,12 @@ export default function Home() {
       <section className="shell py-20 sm:py-28">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.6fr] lg:items-end">
           <p className="label" data-reveal>Who we are</p>
-          <div data-reveal style={delay(1)}>
-            <p className="display max-w-3xl text-3xl leading-snug sm:text-4xl">
-              A construction company for people who want their house built
-              once, and built right.
-            </p>
-            <Link href="/about" className="link-arrow mt-10">
+          <div>
+            <ScrollText
+              className="display max-w-3xl text-3xl leading-snug sm:text-5xl"
+              text="A construction company for people who want their house built once, and built right."
+            />
+            <Link href="/about" className="link-arrow mt-10" data-reveal>
               About the company <ArrowRight className="size-4" />
             </Link>
           </div>
@@ -115,6 +117,8 @@ export default function Home() {
           </div>
         </section>
       ) : null}
+
+      <KineticBand lines={["Foundation · Structure · Finish ·", "Built to last · Islamabad ·"]} />
 
       <section className="bg-ink py-24 text-surface sm:py-32" aria-labelledby="process-heading">
         <div className="shell">

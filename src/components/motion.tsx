@@ -64,6 +64,105 @@ export function ScrollReveal() {
   return null;
 }
 
+// Scroll-linked ("scrubbed") motion. Every [data-scroll] element on screen
+// gets --progress: 0 as its top enters the bottom of the viewport, 1 as its
+// bottom leaves the top. <html> gets --page-progress for the whole page.
+// CSS decides what each value moves, and falls back to a resting state when
+// this never runs.
+export function ScrollScenes() {
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const root = document.documentElement;
+    const onScreen = new Set<HTMLElement>();
+    let frame = 0;
+
+    const measure = (element: HTMLElement, viewport: number) => {
+      const rect = element.getBoundingClientRect();
+      const progress = (viewport - rect.top) / (viewport + rect.height);
+      element.style.setProperty(
+        "--progress",
+        Math.min(1, Math.max(0, progress)).toFixed(4),
+      );
+    };
+    const update = () => {
+      frame = 0;
+      const viewport = window.innerHeight;
+      const scrollable = root.scrollHeight - viewport;
+      root.style.setProperty(
+        "--page-progress",
+        scrollable > 0 ? (window.scrollY / scrollable).toFixed(4) : "0",
+      );
+      onScreen.forEach((element) => measure(element, viewport));
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    // Off-screen elements start from their real position, not the CSS
+    // fallback, so nothing jumps as it enters the viewport.
+    const measureAll = () => {
+      document
+        .querySelectorAll<HTMLElement>("[data-scroll]")
+        .forEach((element) => measure(element, window.innerHeight));
+    };
+
+    const visibility = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        const element = entry.target as HTMLElement;
+        if (entry.isIntersecting) onScreen.add(element);
+        else onScreen.delete(element);
+      }
+      schedule();
+    });
+    const observe = (scope: ParentNode) => {
+      scope
+        .querySelectorAll<HTMLElement>("[data-scroll]")
+        .forEach((element) => visibility.observe(element));
+    };
+    observe(document);
+
+    const mutations = new MutationObserver((records) => {
+      for (const record of records) {
+        record.addedNodes.forEach((node) => {
+          if (!(node instanceof HTMLElement)) return;
+          if (node.matches("[data-scroll]")) visibility.observe(node);
+          observe(node);
+        });
+        if (record.addedNodes.length > 0) measureAll();
+        record.removedNodes.forEach((node) => {
+          if (node instanceof HTMLElement) onScreen.delete(node);
+        });
+      }
+      schedule();
+    });
+    mutations.observe(document.body, { childList: true, subtree: true });
+
+    window.addEventListener("scroll", schedule, { passive: true });
+    const onResize = () => {
+      measureAll();
+      schedule();
+    };
+    window.addEventListener("resize", onResize);
+    measureAll();
+    update();
+
+    return () => {
+      window.removeEventListener("scroll", schedule);
+      window.removeEventListener("resize", onResize);
+      visibility.disconnect();
+      mutations.disconnect();
+      cancelAnimationFrame(frame);
+    };
+  }, []);
+
+  return (
+    <div
+      aria-hidden="true"
+      className="page-progress pointer-events-none fixed inset-x-0 top-0 z-50 h-0.5 origin-left bg-accent"
+    />
+  );
+}
+
 // Exposes how far the hero has scrolled out of view (0–1) as --hero-progress.
 export function HeroScroll(props: ComponentProps<"section">) {
   const ref = useRef<HTMLElement>(null);
