@@ -4,6 +4,7 @@ import { services } from "@/data/services";
 import {
   mapHref,
   navigation,
+  officeAddress,
   phoneHref,
   site,
   whatsappHref,
@@ -57,11 +58,14 @@ export function Footer() {
         <div>
           <p className="label">Contact</p>
           <ul className="mt-5 grid gap-3 text-sm font-light">
-            <li>
-              <a className="transition-colors hover:text-accent" href={mapHref} target="_blank" rel="noreferrer">
-                {site.address}
-              </a>
-            </li>
+            {site.offices.map((office) => (
+              <li key={office.city}>
+                <a className="transition-colors hover:text-accent" href={mapHref(office)} target="_blank" rel="noreferrer">
+                  <span className="label block">{office.label}</span>
+                  <span className="mt-1 block">{officeAddress(office)}</span>
+                </a>
+              </li>
+            ))}
             <li>
               <a className="transition-colors hover:text-accent" href={phoneHref}>
                 {site.phone}
@@ -83,7 +87,7 @@ export function Footer() {
       <div className="border-t border-line">
         <div className="shell flex flex-col gap-2 pt-6 pb-28 text-xs tracking-[0.16em] text-muted uppercase sm:flex-row sm:justify-between md:pb-6">
           <p>© {site.fullName}</p>
-          <p>{site.city} · Built to last</p>
+          <p>{site.cities.join(" · ")} · Built to last</p>
         </div>
       </div>
     </footer>

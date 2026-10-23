@@ -10,7 +10,7 @@ const delay = (step: number) => ({ "--d": step }) as CSSProperties;
 export const metadata: Metadata = {
   title: "Services",
   description:
-    "Turnkey homes, grey structure, finishing, renovation, commercial construction, and design & approvals in Islamabad.",
+    "Turnkey homes, grey structure, finishing, renovation, commercial construction, and design & approvals in Lahore and Islamabad.",
 };
 
 export default function ServicesPage() {

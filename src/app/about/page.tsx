@@ -4,11 +4,11 @@ import type { CSSProperties } from "react";
 import { CtaBand } from "@/components/cta-band";
 import { PageIntro } from "@/components/page-intro";
 import { ScrollText } from "@/components/scroll-text";
-import { principles, site } from "@/data/site";
+import { principles, serviceArea, site } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "About",
-  description: `${site.fullName} is a residential and commercial construction company based in ${site.city}.`,
+  description: `${site.fullName} is a residential and commercial construction company based in ${site.city}, building across ${serviceArea}.`,
 };
 
 export default function AboutPage() {
@@ -16,8 +16,8 @@ export default function AboutPage() {
     <>
       <PageIntro eyebrow="About" title="Construction is a promise. We build to keep it.">
         <p>
-          {site.fullName} is a construction company based in {site.city}. We
-          build homes and commercial spaces for clients who care how a building
+          {site.fullName} is a construction company headquartered in{" "}
+          {site.city}, with a second office in {site.offices[1].city}. We build homes and commercial spaces for clients who care how a building
           is made — not only how it looks on handover day.
         </p>
       </PageIntro>

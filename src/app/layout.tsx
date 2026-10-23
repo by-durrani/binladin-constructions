@@ -6,7 +6,7 @@ import { Intro, introScript } from "@/components/intro";
 import { MobileNav } from "@/components/mobile-nav";
 import { IntroSettle, ScrollReveal, ScrollScenes } from "@/components/motion";
 import { WhatsAppButton } from "@/components/whatsapp-button";
-import { site } from "@/data/site";
+import { serviceArea, site } from "@/data/site";
 import "./globals.css";
 
 const display = Cinzel({
@@ -24,7 +24,7 @@ const body = Josefin_Sans({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.fullName} — Construction in ${site.city}`,
+    default: `${site.fullName} — Construction in ${serviceArea}`,
     template: `%s — ${site.fullName}`,
   },
   description: site.description,

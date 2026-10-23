@@ -8,7 +8,7 @@ import { ProjectCard } from "@/components/project-card";
 import { ScrollText } from "@/components/scroll-text";
 import { featuredProjects } from "@/data/projects";
 import { processSteps, services } from "@/data/services";
-import { mapHref, phoneHref, principles, site } from "@/data/site";
+import { mapHref, officeAddress, phoneHref, principles, site } from "@/data/site";
 
 const delay = (step: number) => ({ "--d": step }) as CSSProperties;
 
@@ -21,13 +21,15 @@ const structuredData = {
   telephone: site.phone,
   email: site.email,
   image: site.heroImage.src,
-  address: {
+  address: site.offices.map((office) => ({
     "@type": "PostalAddress",
-    streetAddress: site.address,
-    addressLocality: site.city,
+    name: office.label,
+    streetAddress: office.street,
+    addressLocality: office.city,
+    postalCode: office.postalCode,
     addressCountry: "PK",
-  },
-  areaServed: site.city,
+  })),
+  areaServed: site.cities.map((city) => ({ "@type": "City", name: city })),
 };
 
 export default function Home() {
@@ -118,7 +120,7 @@ export default function Home() {
         </section>
       ) : null}
 
-      <KineticBand lines={["Foundation · Structure · Finish ·", "Built to last · Islamabad ·"]} />
+      <KineticBand lines={["Foundation · Structure · Finish ·", `Built to last · ${site.cities.join(" · ")} ·`]} />
 
       <section className="bg-ink py-24 text-surface sm:py-32" aria-labelledby="process-heading">
         <div className="shell">
@@ -153,14 +155,16 @@ export default function Home() {
               Built to last, without surprises.
             </h2>
             <dl className="mt-12 grid gap-6 text-sm">
-              <div>
-                <dt className="label">Office</dt>
-                <dd className="mt-2 font-light">
-                  <a href={mapHref} target="_blank" rel="noreferrer" className="hover:text-accent">
-                    {site.address}
-                  </a>
-                </dd>
-              </div>
+              {site.offices.map((office) => (
+                <div key={office.city}>
+                  <dt className="label">{office.label}</dt>
+                  <dd className="mt-2 font-light">
+                    <a href={mapHref(office)} target="_blank" rel="noreferrer" className="hover:text-accent">
+                      {officeAddress(office)}
+                    </a>
+                  </dd>
+                </div>
+              ))}
               <div>
                 <dt className="label">Call</dt>
                 <dd className="mt-2 font-light">

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { ContactForm } from "@/components/contact-form";
 import { ChatIcon, MailIcon, PhoneIcon, PinIcon } from "@/components/icons";
 import { PageIntro } from "@/components/page-intro";
-import { mapHref, phoneHref, site, whatsappHref } from "@/data/site";
+import { mapHref, officeAddress, phoneHref, site, whatsappHref } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "Contact",
@@ -13,7 +13,13 @@ const channels = [
   { label: "Call", value: site.phone, href: phoneHref, Icon: PhoneIcon },
   { label: "WhatsApp", value: site.phone, href: whatsappHref(), Icon: ChatIcon, external: true },
   { label: "Email", value: site.email, href: `mailto:${site.email}`, Icon: MailIcon },
-  { label: "Office", value: site.address, href: mapHref, Icon: PinIcon, external: true },
+  ...site.offices.map((office) => ({
+    label: office.label,
+    value: officeAddress(office),
+    href: mapHref(office),
+    Icon: PinIcon,
+    external: true,
+  })),
 ];
 
 export default function ContactPage() {

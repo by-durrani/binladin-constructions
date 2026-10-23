@@ -62,7 +62,7 @@ export function Hero() {
         </div>
         <p className="label reveal text-white/75">
           <span className="mr-3 inline-block h-px w-10 bg-white/50 align-middle" />
-          Construction · {site.city}
+          Construction · {site.cities.join(" · ")}
         </p>
         <h1 className="display mt-5 max-w-4xl text-4xl leading-[1.08] text-white sm:text-6xl lg:max-w-[52vw] lg:text-7xl">
           {words.map((word, index) => (
