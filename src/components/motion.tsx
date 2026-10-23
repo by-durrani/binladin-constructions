@@ -1,14 +1,13 @@
 "use client";
 
-import { type ComponentProps, useEffect, useRef } from "react";
+import { type ComponentProps, type ReactNode, useEffect, useRef } from "react";
 
 // Reveals every [data-reveal] element as it scrolls into view. Content is
 // visible by default; it is only hidden once this has run, so nothing is lost
-// if JavaScript fails.
+// if JavaScript fails. Under reduced motion the CSS turns reveals into fades.
 export function ScrollReveal() {
   useEffect(() => {
     const root = document.documentElement;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -68,11 +67,9 @@ export function ScrollReveal() {
 // gets --progress: 0 as its top enters the bottom of the viewport, 1 as its
 // bottom leaves the top. <html> gets --page-progress for the whole page.
 // CSS decides what each value moves, and falls back to a resting state when
-// this never runs.
+// this never runs. Under reduced motion the CSS keeps only non-moving effects.
 export function ScrollScenes() {
   useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
     const root = document.documentElement;
     const onScreen = new Set<HTMLElement>();
     let frame = 0;
@@ -194,4 +191,34 @@ export function HeroScroll(props: ComponentProps<"section">) {
   }, []);
 
   return <section ref={ref} {...props} />;
+}
+
+// Shows its content only while the box is at least `minHeight` tall, for
+// decoration that is pointless when squeezed (CSS: [data-fits="false"]).
+export function SizeGate({
+  minHeight,
+  className,
+  children,
+}: {
+  minHeight: number;
+  className?: string;
+  children: ReactNode;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) return;
+    const observer = new ResizeObserver(([entry]) => {
+      element.dataset.fits = String(entry.contentRect.height >= minHeight);
+    });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [minHeight]);
+
+  return (
+    <div ref={ref} className={className} data-fits="false" aria-hidden="true">
+      {children}
+    </div>
+  );
 }

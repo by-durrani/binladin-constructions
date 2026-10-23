@@ -289,6 +289,11 @@
     animation-delay: calc(var(--d, 0) * 130ms + 500ms);
   }
 
+  /* Set by <SizeGate>; decorative content stays out until it fits. */
+  [data-fits="false"] > svg {
+    display: none;
+  }
+
   .scroll-cue {
     opacity: 0;
     animation: fade-in 800ms ease 1600ms forwards;
@@ -464,37 +469,72 @@
   }
 }
 
+/* Reduced motion: remove anything that travels across the screen, but keep
+   fades, the word-by-word light-up, the progress bar and the blueprint
+   drawing, so the site still feels alive. */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
 
+  /* Entrance animations become plain fades. */
   .reveal,
-  .hero-image,
-  .zoom-frame img,
   .mask-word,
-  .grid-line,
-  .draw-fade,
-  .scroll-cue,
+  .grid-line {
+    transform: none;
+    animation-name: fade-in;
+  }
+
+  .mask-word,
+  .grid-line {
+    opacity: 0;
+  }
+
+  .hero-image,
   .marquee,
+  .scroll-cue-bar {
+    animation: none;
+  }
+
   .hero-media,
   .hero-content {
-    animation: none !important;
-    transition: none !important;
+    transform: none;
+  }
+
+  .zoom-frame img {
+    transition: none;
+  }
+
+  /* Scroll reveals fade in place instead of sliding or wiping. */
+  .motion [data-reveal] {
+    transform: none;
+  }
+
+  .motion [data-reveal="image"],
+  .motion [data-reveal="line"] {
+    clip-path: none;
+    opacity: 0;
+    transition: opacity 900ms var(--ease-out-soft);
+  }
+
+  /* Unlayered rules beat the layered .is-visible rule, so restate it here. */
+  .motion [data-reveal].is-visible {
     opacity: 1;
-    transform: none !important;
   }
 
-  .draw {
-    animation: none !important;
-    stroke-dashoffset: 0;
+  .motion [data-reveal="image"] img,
+  .motion [data-reveal].is-visible img {
+    scale: var(--rest-scale, 1);
+    transition: none;
   }
 
-  .page-progress {
-    display: none;
+  /* Scroll-linked movement rests in place. */
+  .parallax img {
+    translate: none;
   }
 
-  .scroll-cue-bar {
-    animation: none !important;
+  .kinetic-row,
+  .kinetic-row-reverse {
+    transform: translate3d(-12%, 0, 0);
   }
 }

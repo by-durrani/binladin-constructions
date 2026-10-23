@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import { Blueprint } from "@/components/blueprint";
 import { ArrowRight } from "@/components/icons";
-import { HeroScroll } from "@/components/motion";
+import { HeroScroll, SizeGate } from "@/components/motion";
 import { services } from "@/data/services";
 import { site } from "@/data/site";
 
@@ -45,7 +45,19 @@ export function Hero() {
         <Blueprint className="w-full text-white/70" />
       </div>
 
-      <div className="hero-content shell relative flex flex-1 flex-col justify-end pt-28 pb-14 sm:pb-16">
+      <div className="hero-content shell relative flex flex-1 flex-col justify-end pt-24 pb-14 sm:pt-28 sm:pb-16">
+        {/* Smaller screens: the drawing fills whatever space is left above
+            the text, scaled to fit, and steps aside when that space is too
+            small to read. */}
+        <SizeGate
+          minHeight={110}
+          className="pointer-events-none relative mb-8 min-h-0 flex-1 lg:hidden"
+        >
+          <Blueprint
+            className="absolute inset-0 size-full text-white/50"
+            align="xMaxYMax meet"
+          />
+        </SizeGate>
         <p className="label reveal text-white/75">
           <span className="mr-3 inline-block h-px w-10 bg-white/50 align-middle" />
           Construction · {site.city}

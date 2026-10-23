@@ -46,10 +46,18 @@ const levels = [
 
 const delay = (step: number) => ({ "--d": step }) as CSSProperties;
 
-export function Blueprint({ className = "" }: { className?: string }) {
+export function Blueprint({
+  className = "",
+  align,
+}: {
+  className?: string;
+  // SVG preserveAspectRatio, for when the drawing is fitted into a box.
+  align?: string;
+}) {
   return (
     <svg
       viewBox="0 0 610 440"
+      preserveAspectRatio={align}
       fill="none"
       stroke="currentColor"
       strokeWidth={1}
