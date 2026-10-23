@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cinzel, Josefin_Sans } from "next/font/google";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
+import { ScrollReveal } from "@/components/motion";
 import { WhatsAppButton } from "@/components/whatsapp-button";
 import { site } from "@/data/site";
 import "./globals.css";
@@ -49,6 +50,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         </main>
         <Footer />
         <WhatsAppButton />
+        <ScrollReveal />
       </body>
     </html>
   );

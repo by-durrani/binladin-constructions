@@ -1,4 +1,5 @@
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import { ArrowRight } from "@/components/icons";
 import { whatsappHref } from "@/data/site";
 
@@ -12,7 +13,7 @@ export function CtaBand({
   return (
     <section className="bg-accent text-white">
       <div className="shell grid gap-10 py-20 sm:py-28 lg:grid-cols-[1.3fr_1fr] lg:items-end">
-        <div>
+        <div data-reveal>
           <p className="label text-white/70">Start a project</p>
           <h2 className="display mt-4 text-3xl leading-tight sm:text-5xl">
             {title}
@@ -21,7 +22,11 @@ export function CtaBand({
             {copy}
           </p>
         </div>
-        <div className="flex flex-col gap-3 sm:flex-row lg:justify-end">
+        <div
+          className="flex flex-col gap-3 sm:flex-row lg:justify-end"
+          data-reveal
+          style={{ "--d": 1 } as CSSProperties}
+        >
           <Link href="/contact" className="btn btn-light">
             Request an estimate <ArrowRight className="size-4" />
           </Link>

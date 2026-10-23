@@ -68,6 +68,20 @@ function Nav(props: NavProps) {
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+
+  // Slide away while scrolling down, come back on any scroll up.
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (Math.abs(y - lastY) < 6) return;
+      setHidden(y > lastY && y > 160);
+      lastY = y;
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -81,7 +95,11 @@ export function Header() {
   const close = () => setOpen(false);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-line bg-background/90 backdrop-blur-md">
+    <header
+      className={`fixed inset-x-0 top-0 z-40 border-b border-line bg-background/90 backdrop-blur-md transition-transform duration-500 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+        hidden && !open ? "-translate-y-full" : "translate-y-0"
+      }`}
+    >
       <div className="shell flex h-16 items-center justify-between sm:h-20">
         <Logo onClick={close} />
         <nav className="hidden items-center gap-10 md:flex" aria-label="Primary">

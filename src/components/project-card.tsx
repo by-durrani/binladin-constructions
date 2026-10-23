@@ -1,17 +1,24 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { CSSProperties } from "react";
 import type { Project } from "@/data/projects";
 
 export function ProjectCard({
   project,
+  index = 0,
   sizes = "(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw",
 }: {
   project: Project;
+  index?: number;
   sizes?: string;
 }) {
   return (
     <article className="group relative">
-      <div className="zoom-frame relative aspect-[4/5] overflow-hidden bg-line">
+      <div
+        className="zoom-frame relative aspect-[4/5] overflow-hidden bg-line"
+        data-reveal="image"
+        style={{ "--d": index % 3 } as CSSProperties}
+      >
         <Image
           src={project.cover.src}
           alt={project.cover.alt}

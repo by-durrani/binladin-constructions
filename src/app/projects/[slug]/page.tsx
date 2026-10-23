@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import type { CSSProperties } from "react";
 import { CtaBand } from "@/components/cta-band";
 import { ArrowLeft, ArrowRight } from "@/components/icons";
 import { getProject, projects } from "@/data/projects";
@@ -82,7 +83,7 @@ export default async function ProjectPage({
       </div>
 
       <section className="shell grid gap-14 py-16 sm:py-24 lg:grid-cols-[1fr_1.6fr]">
-        <dl className="grid h-fit grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8">
+        <dl className="grid h-fit grid-cols-2 gap-x-6 gap-y-8 border-t border-line pt-8" data-reveal>
           {facts.map((fact) => (
             <div key={fact.label}>
               <dt className="label">{fact.label}</dt>
@@ -90,7 +91,7 @@ export default async function ProjectPage({
             </div>
           ))}
         </dl>
-        <div className="border-t border-line pt-8">
+        <div className="border-t border-line pt-8" data-reveal style={{ "--d": 1 } as CSSProperties}>
           <p className="display text-2xl leading-snug sm:text-3xl">
             {project.summary}
           </p>
@@ -120,6 +121,8 @@ export default async function ProjectPage({
             {project.gallery.map((image, imageIndex) => (
               <li
                 key={image.src}
+                data-reveal="image"
+                style={{ "--d": imageIndex % 3 === 0 ? 0 : (imageIndex % 3) - 1 } as CSSProperties}
                 className={`relative overflow-hidden bg-line ${
                   imageIndex % 3 === 0
                     ? "aspect-[4/3] sm:col-span-2 sm:aspect-[16/9]"
