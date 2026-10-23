@@ -3,7 +3,6 @@
 import { usePathname } from "next/navigation";
 import {
   type ComponentProps,
-  type ReactNode,
   Suspense,
   useEffect,
   useRef,
@@ -198,36 +197,6 @@ export function HeroScroll(props: ComponentProps<"section">) {
   }, []);
 
   return <section ref={ref} {...props} />;
-}
-
-// Shows its content only while the box is at least `minHeight` tall, for
-// decoration that is pointless when squeezed (CSS: [data-fits="false"]).
-export function SizeGate({
-  minHeight,
-  className,
-  children,
-}: {
-  minHeight: number;
-  className?: string;
-  children: ReactNode;
-}) {
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const element = ref.current;
-    if (!element) return;
-    const observer = new ResizeObserver(([entry]) => {
-      element.dataset.fits = String(entry.contentRect.height >= minHeight);
-    });
-    observer.observe(element);
-    return () => observer.disconnect();
-  }, [minHeight]);
-
-  return (
-    <div ref={ref} className={className} data-fits="false" aria-hidden="true">
-      {children}
-    </div>
-  );
 }
 
 // First-load animations wait for the logo intro via --intro. Once the visitor

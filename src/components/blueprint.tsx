@@ -2,6 +2,9 @@ import type { CSSProperties } from "react";
 
 // A two-storey house elevation that draws itself in, line by line.
 // Each stroke uses pathLength={1} so the CSS can animate any shape from 0 to 1.
+// Strokes scale with the drawing (no non-scaling-stroke), which keeps the
+// dash maths in one coordinate space in every browser; small copies pass a
+// thicker `strokeWidth` so their lines still render at about a pixel.
 const strokes: { d: string; delay: number }[] = [
   // Structural grid
   { d: "M90 70 V400", delay: 0 },
@@ -49,10 +52,12 @@ const delay = (step: number) => ({ "--d": step }) as CSSProperties;
 export function Blueprint({
   className = "",
   align,
+  strokeWidth = 1,
 }: {
   className?: string;
   // SVG preserveAspectRatio, for when the drawing is fitted into a box.
   align?: string;
+  strokeWidth?: number;
 }) {
   return (
     <svg
@@ -60,7 +65,7 @@ export function Blueprint({
       preserveAspectRatio={align}
       fill="none"
       stroke="currentColor"
-      strokeWidth={1}
+      strokeWidth={strokeWidth}
       strokeLinecap="square"
       className={className}
       aria-hidden="true"
@@ -71,14 +76,13 @@ export function Blueprint({
           d={stroke.d}
           pathLength={1}
           className="draw"
-          vectorEffect="non-scaling-stroke"
           style={delay(stroke.delay)}
           opacity={stroke.delay < 3 ? 0.45 : 1}
         />
       ))}
       {bubbles.map((bubble) => (
         <g key={bubble.label} className="draw-fade" style={delay(3)}>
-          <circle cx={bubble.cx} cy={52} r={13} vectorEffect="non-scaling-stroke" />
+          <circle cx={bubble.cx} cy={52} r={13} />
           <text
             x={bubble.cx}
             y={57}

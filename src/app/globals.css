@@ -304,10 +304,6 @@
     animation-delay: calc(var(--intro) + var(--d, 0) * 130ms + 500ms);
   }
 
-  /* Set by <SizeGate>; decorative content stays out until it fits. */
-  [data-fits="false"] > svg {
-    display: none;
-  }
 
   .scroll-cue {
     opacity: 0;
