@@ -1,105 +1,54 @@
+// Company details used across the whole site. Edit these first.
 export const site = {
   name: "BIN LADIN",
-  tagline: "Houses built to be lived in.",
+  fullName: "BIN LADIN Constructions",
+  description:
+    "Residential and commercial construction in Islamabad — grey structure, turnkey homes, finishing and renovation, built to drawing and handed over complete.",
   city: "Islamabad",
-  phone: "+92 3017758065",
+  phone: "+92 301 7758065",
+  // International format without "+" or spaces, used for wa.me links.
+  whatsapp: "923017758065",
   email: "binladinconstructions@gmail.com",
-  address: "Faisal town Block A Salam tower, 204, Islamabad, 44000",
+  address: "204, Salam Tower, Block A, Faisal Town, Islamabad 44000",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  // Swap for a photo of your own best project once you have one.
+  heroImage: {
+    src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2400&q=80",
+    alt: "Modern courtyard house with a still pool in warm evening light",
+  },
 };
 
-export const rooms = [
-  {
-    id: "entry",
-    number: "01",
-    name: "Entry",
-    title: "A quiet threshold.",
-    copy: "Light meets limestone. The first room is never rushed — it is where the house takes its breath.",
-    image:
-      "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=2400&q=80",
-    alt: "Sunlit entry hall with plaster walls, oak flooring, and a sculptural staircase",
-  },
-  {
-    id: "living",
-    number: "02",
-    name: "Living",
-    title: "Rooms that hold time.",
-    copy: "Soft plaster, linen, and a low horizon of windows. The living room is designed for lingering, not display.",
-    image:
-      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=2400&q=80",
-    alt: "Minimal living room with warm oak, linen seating, and floor-to-ceiling windows",
-  },
-  {
-    id: "kitchen",
-    number: "03",
-    name: "Kitchen",
-    title: "Craft, close at hand.",
-    copy: "Stone counters, quiet hardware, and a long island that becomes the day’s center of gravity.",
-    image:
-      "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=2400&q=80",
-    alt: "Minimal kitchen with stone counters, pale oak cabinets, and natural light",
-  },
-  {
-    id: "terrace",
-    number: "04",
-    name: "Terrace",
-    title: "Inside, slightly outside.",
-    copy: "A courtyard that borrows the sky. The house does not end at the glass — it continues into still water and shade.",
-    image:
-      "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2400&q=80",
-    alt: "Modern courtyard house with a still pool and warm evening light",
-  },
-] as const;
+export const phoneHref = `tel:${site.phone.replace(/\s/g, "")}`;
 
-export const works = [
-  {
-    year: "2025",
-    name: "Casa North",
-    place: "Santa Monica",
-    area: "4,200 sq ft",
-    image:
-      "https://images.unsplash.com/photo-1600573472592-401b489a3cdc?auto=format&fit=crop&w=1800&q=80",
-    alt: "White stucco residence with a quiet entry court and olive trees",
-  },
-  {
-    year: "2024",
-    name: "The Oak Pavilion",
-    place: "Pasadena",
-    area: "3,140 sq ft",
-    image:
-      "https://images.unsplash.com/photo-1616594039964-ae9021a400a0?auto=format&fit=crop&w=1800&q=80",
-    alt: "Bedroom with oak millwork, linen bedding, and a view to a private garden",
-  },
-  {
-    year: "2024",
-    name: "Hillside House",
-    place: "Los Feliz",
-    area: "5,080 sq ft",
-    image:
-      "https://images.unsplash.com/photo-1600047509807-ba8f99d2cdbc?auto=format&fit=crop&w=1800&q=80",
-    alt: "Open living space with a long window wall and a sculptural fireplace",
-  },
-  {
-    year: "2023",
-    name: "Maison Marlow",
-    place: "Venice",
-    area: "2,760 sq ft",
-    image:
-      "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?auto=format&fit=crop&w=1800&q=80",
-    alt: "Stone bathroom with a freestanding tub and a narrow garden window",
-  },
+export const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.address)}`;
+
+export function whatsappHref(text?: string) {
+  const base = `https://wa.me/${site.whatsapp}`;
+  return text ? `${base}?text=${encodeURIComponent(text)}` : base;
+}
+
+export const navigation = [
+  { href: "/projects", label: "Projects" },
+  { href: "/services", label: "Services" },
+  { href: "/about", label: "About" },
+  { href: "/contact", label: "Contact" },
 ] as const;
 
 export const principles = [
   {
-    name: "Material honesty",
-    copy: "Plaster, oak, stone, and linen — used as they are, without costume.",
+    name: "Built to drawing",
+    copy: "Every house is built against approved architectural and structural drawings, and checked on site at each stage — never improvised as we go.",
   },
   {
-    name: "Light as structure",
-    copy: "Openings are placed to move the sun through rooms the way a floor plan moves people.",
+    name: "Materials, named",
+    copy: "Cement, steel and finishing materials are specified by brand and grade in the estimate, so you know exactly what goes into your walls.",
   },
   {
-    name: "Quiet craft",
-    copy: "Joinery you feel with your hand. Hardware that disappears. Details that last.",
+    name: "One team, start to handover",
+    copy: "Design, approvals, structure and finishing under one contract, with a single point of contact from the first visit to the keys.",
+  },
+  {
+    name: "Progress you can see",
+    copy: "Regular site updates with photos, so you watch the house rise even when you cannot visit.",
   },
 ] as const;

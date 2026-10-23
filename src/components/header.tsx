@@ -1,64 +1,98 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { site } from "@/data/site";
-import Image from "next/image";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Suspense, useEffect, useState } from "react";
+import { Logo } from "@/components/logo";
+import { navigation } from "@/data/site";
 
-const links = [
-  { href: "#rooms", label: "Rooms" },
-  { href: "#works", label: "Works" },
-  { href: "#studio", label: "Studio" },
-  { href: "#visit", label: "Visit" },
-];
+type NavProps = {
+  variant: "desktop" | "mobile";
+  onNavigate?: () => void;
+};
+
+function isActive(pathname: string | null, href: string) {
+  return pathname === href || Boolean(pathname?.startsWith(`${href}/`));
+}
+
+function NavList({ variant, onNavigate, pathname }: NavProps & { pathname: string | null }) {
+  return (
+    <ul
+      className={
+        variant === "desktop"
+          ? "flex items-center gap-10"
+          : "flex flex-col gap-5"
+      }
+    >
+      {navigation.map((link) => {
+        const active = isActive(pathname, link.href);
+        return (
+          <li key={link.href}>
+            <Link
+              href={link.href}
+              onClick={onNavigate}
+              aria-current={active ? "page" : undefined}
+              className={
+                variant === "desktop"
+                  ? `label border-b pb-1 transition-colors duration-200 hover:text-ink ${
+                      active
+                        ? "border-accent text-ink"
+                        : "border-transparent"
+                    }`
+                  : `display text-3xl ${active ? "text-accent" : ""}`
+              }
+            >
+              {link.label}
+            </Link>
+          </li>
+        );
+      })}
+    </ul>
+  );
+}
+
+// Reading the pathname suspends while dynamic routes prerender, so it sits
+// behind a boundary that falls back to the same links without highlighting.
+function ActiveNavList(props: NavProps) {
+  const pathname = usePathname();
+  return <NavList {...props} pathname={pathname} />;
+}
+
+function Nav(props: NavProps) {
+  return (
+    <Suspense fallback={<NavList {...props} pathname={null} />}>
+      <ActiveNavList {...props} />
+    </Suspense>
+  );
+}
 
 export function Header() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+    if (!open) return;
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  const close = () => setOpen(false);
 
   return (
-    <header
-      className={`fixed inset-x-0 top-0 z-40 transition-[background,border-color] duration-300 ${
-        scrolled || open
-          ? "border-b border-line bg-background/90 backdrop-blur-md"
-          : "border-b border-line bg-background/90 backdrop-blur-md"
-      }`}
-    >
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-5 sm:h-20 sm:px-8">
-        <a
-          href="#ll"
-          onClick={(e) => {
-            e.preventDefault();
-            window.scrollTo({ behavior: "smooth", top: 0 });
-          }}
-          className="display text-[0.95rem] tracking-[0.22em] uppercase  flex gap-2 items-center  "
-        >
-          <Image src={"/bin-ladin.svg"} alt="logo" height={40} width={20} />
-          <span className="mt-3">{site.name} </span>
-        </a>
-        <nav
-          className="hidden items-center gap-10 md:flex"
-          aria-label="Primary"
-        >
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="label text-[0.65rem] text-black! transition-colors duration-200 "
-            >
-              {link.label}
-            </a>
-          ))}
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-line bg-background/90 backdrop-blur-md">
+      <div className="shell flex h-16 items-center justify-between sm:h-20">
+        <Logo onClick={close} />
+        <nav className="hidden items-center gap-10 md:flex" aria-label="Primary">
+          <Nav variant="desktop" />
+          <Link href="/contact" className="btn btn-primary hidden lg:inline-flex">
+            Get an estimate
+          </Link>
         </nav>
         <button
           type="button"
-          className="label flex min-h-11 min-w-11 items-center justify-end md:hidden"
+          className="label flex min-h-11 min-w-11 items-center justify-end text-ink md:hidden"
           aria-expanded={open}
           aria-controls="mobile-nav"
           onClick={() => setOpen((value) => !value)}
@@ -69,22 +103,13 @@ export function Header() {
       {open ? (
         <nav
           id="mobile-nav"
-          className="border-t border-line px-5 py-6 md:hidden"
+          className="h-[calc(100dvh-4rem)] overflow-y-auto border-t border-line bg-background px-5 py-10 md:hidden"
           aria-label="Mobile"
         >
-          <ul className="flex flex-col gap-4">
-            {links.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  className="display text-2xl"
-                  onClick={() => setOpen(false)}
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <Nav variant="mobile" onNavigate={close} />
+          <Link href="/contact" onClick={close} className="btn btn-primary mt-12 w-full">
+            Get an estimate
+          </Link>
         </nav>
       ) : null}
     </header>
