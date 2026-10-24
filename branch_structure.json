@@ -1,0 +1,15 @@
+{
+  "default_branch": "main",
+  "branches": [
+    "claude/gallant-goldberg-jgakpe",
+    "main"
+  ],
+  "parent": {
+    "claude/gallant-goldberg-jgakpe": "main",
+    "main": null
+  },
+  "order": [
+    "main",
+    "claude/gallant-goldberg-jgakpe"
+  ]
+}

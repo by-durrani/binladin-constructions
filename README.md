@@ -32,6 +32,20 @@ All text and data is in `src/data/` — you rarely need to touch the pages.
 - `src/data/projects.ts` — the portfolio.
 - `src/data/services.ts` — services, process steps and FAQs.
 
+## Cookies, analytics and legal pages
+
+- The cookie dialog (`src/components/cookie-consent.tsx`) asks once, stores
+  the choice in a `bl_consent` cookie for 6 months, and reopens from
+  "Cookie settings" in the footer. Rejecting is as easy as accepting.
+- Google Analytics and the Meta Pixel are optional: set `NEXT_PUBLIC_GA_ID`
+  and/or `NEXT_PUBLIC_META_PIXEL_ID` (see `.env.example`). Each loads only
+  after the visitor accepts it. With neither set, the dialog simply says the
+  site uses essential storage only.
+- `/terms`, `/privacy` and `/cookies` are templates written for this site;
+  the privacy and cookie pages describe only the trackers you have switched
+  on. Have them reviewed by a lawyer, and update `legalUpdated` in
+  `src/components/legal-page.tsx` whenever the wording changes.
+
 ## Logo and brand files
 
 The logo was traced to vectors from the brand sheet's primary logo.

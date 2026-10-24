@@ -512,6 +512,136 @@
   }
 }
 
+/* ---------- Cookie dialog and legal pages ---------- */
+@layer components {
+  /* Sits above the phone nav bar; appears once the logo intro has lifted. */
+  .consent {
+    bottom: calc(env(safe-area-inset-bottom, 0px) + 5.25rem);
+    color: var(--ink);
+    /* Nearly opaque: a paragraph of text needs a calmer backdrop than the
+       nav bar's glass. */
+    background: color-mix(in srgb, var(--surface) 95%, transparent);
+    animation: consent-in 700ms var(--ease-out-soft) calc(var(--intro) + 900ms) both;
+  }
+
+  @media (width >= 48rem) {
+    .consent {
+      bottom: 1.5rem;
+    }
+  }
+
+  .consent-now {
+    animation-delay: 0ms;
+  }
+
+  .consent-switch {
+    position: relative;
+    width: 2.5rem;
+    height: 1.5rem;
+    appearance: none;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--ink) 18%, transparent);
+    transition: background-color 200ms;
+  }
+
+  .consent-switch::after {
+    content: "";
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 1px 3px rgba(28, 25, 21, 0.3);
+    transition: transform 200ms var(--ease-out-soft);
+  }
+
+  .consent-switch:checked {
+    background: var(--accent);
+  }
+
+  .consent-switch:checked::after {
+    transform: translateX(1rem);
+  }
+
+  .consent-switch:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+  }
+
+  /* Long-form legal text. */
+  .legal {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: color-mix(in srgb, var(--ink) 82%, transparent);
+  }
+
+  .legal h2 {
+    margin-top: 3rem;
+    font-family: var(--font-display), serif;
+    font-size: 1.5rem;
+    line-height: 1.3;
+    color: var(--ink);
+  }
+
+  .legal h3 {
+    margin-top: 1.75rem;
+    font-weight: 600;
+    color: var(--ink);
+  }
+
+  .legal p,
+  .legal ul,
+  .legal table {
+    margin-top: 1rem;
+  }
+
+  .legal ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+  }
+
+  .legal li + li {
+    margin-top: 0.4rem;
+  }
+
+  .legal a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .legal table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.875rem;
+  }
+
+  .legal th,
+  .legal td {
+    border-bottom: 1px solid var(--line);
+    padding: 0.75rem 0.75rem 0.75rem 0;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .legal th {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 400;
+  }
+}
+
+@keyframes consent-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
 @keyframes intro-lift {
   to {
     transform: translateY(-100%);
@@ -697,6 +827,10 @@
   }
 
   .mobile-nav {
+    animation-name: fade-in;
+  }
+
+  .consent {
     animation-name: fade-in;
   }
 
