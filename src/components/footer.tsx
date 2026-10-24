@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CookieSettingsButton } from "@/components/cookie-consent";
 import { Logo } from "@/components/logo";
 import { services } from "@/data/services";
 import {
@@ -87,6 +88,26 @@ export function Footer() {
       <div className="border-t border-line">
         <div className="shell flex flex-col gap-2 pt-6 pb-28 text-xs tracking-[0.16em] text-muted uppercase sm:flex-row sm:justify-between md:pb-6">
           <p>© {site.fullName}</p>
+          <ul className="flex flex-wrap gap-x-5 gap-y-2">
+            <li>
+              <Link href="/terms" className="transition-colors hover:text-ink">
+                Terms
+              </Link>
+            </li>
+            <li>
+              <Link href="/privacy" className="transition-colors hover:text-ink">
+                Privacy
+              </Link>
+            </li>
+            <li>
+              <Link href="/cookies" className="transition-colors hover:text-ink">
+                Cookies
+              </Link>
+            </li>
+            <li>
+              <CookieSettingsButton className="uppercase transition-colors hover:text-ink" />
+            </li>
+          </ul>
           <p>{site.cities.join(" · ")} · Building better tomorrows</p>
         </div>
       </div>
