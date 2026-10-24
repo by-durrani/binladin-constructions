@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { sendEnquiry } from "@/app/actions";
 import { ChatIcon } from "@/components/icons";
@@ -152,9 +153,18 @@ export function ContactForm() {
           <input name="website" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
-      <button type="submit" disabled={pending} className="btn btn-primary w-full sm:w-fit">
-        {pending ? "Sending…" : "Send enquiry"}
-      </button>
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-6">
+        <button type="submit" disabled={pending} className="btn btn-primary w-full sm:w-fit">
+          {pending ? "Sending…" : "Send enquiry"}
+        </button>
+        <p className="text-xs leading-relaxed text-muted">
+          We use your details only to reply to this enquiry. See our{" "}
+          <Link href="/privacy" className="underline underline-offset-2 hover:text-accent">
+            Privacy Policy
+          </Link>
+          .
+        </p>
+      </div>
     </form>
   );
 }
