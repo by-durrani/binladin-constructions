@@ -3,13 +3,29 @@ export const site = {
   name: "BIN LADIN",
   fullName: "BIN LADIN Constructions",
   description:
-    "Residential and commercial construction in Islamabad — grey structure, turnkey homes, finishing and renovation, built to drawing and handed over complete.",
-  city: "Islamabad",
-  phone: "+92 301 7758065",
+    "Residential and commercial construction in Lahore and Islamabad — grey structure, turnkey homes, finishing and renovation, built to drawing and handed over complete.",
+  // Head office city. `cities` is the full list, for "Lahore · Islamabad" lines.
+  city: "Lahore",
+  cities: ["Lahore", "Islamabad"],
+  phone: "+92 300 1755065",
   // International format without "+" or spaces, used for wa.me links.
-  whatsapp: "923017758065",
+  whatsapp: "923001755065",
   email: "binladinconstructions@gmail.com",
-  address: "204, Salam Tower, Block A, Faisal Town, Islamabad 44000",
+  // First entry is the head office.
+  offices: [
+    {
+      label: "Head office",
+      city: "Lahore",
+      street: "216 Main Blvd, Sector J, DHA Phase 6",
+      postalCode: "54000",
+    },
+    {
+      label: "Islamabad office",
+      city: "Islamabad",
+      street: "204 Salam Tower, Block A, Faisal Town",
+      postalCode: "44000",
+    },
+  ],
   // Absolute links (share previews, sitemap) need the live address. Vercel
   // provides its production domain at build time when this isn't set.
   url:
@@ -26,7 +42,17 @@ export const site = {
 
 export const phoneHref = `tel:${site.phone.replace(/\s/g, "")}`;
 
-export const mapHref = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.address)}`;
+export type Office = (typeof site.offices)[number];
+
+export function officeAddress(office: Office) {
+  return `${office.street}, ${office.city} ${office.postalCode}`;
+}
+
+export function mapHref(office: Office) {
+  return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${officeAddress(office)}, Pakistan`)}`;
+}
+
+export const serviceArea = site.cities.join(" and ");
 
 export function whatsappHref(text?: string) {
   const base = `https://wa.me/${site.whatsapp}`;
