@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Cinzel, Josefin_Sans } from "next/font/google";
+import { CookieConsent, Trackers } from "@/components/cookie-consent";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { Intro, introScript } from "@/components/intro";
@@ -67,6 +68,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <ScrollReveal />
         <ScrollScenes />
         <IntroSettle />
+        <CookieConsent />
+        <Trackers />
       </body>
     </html>
   );
