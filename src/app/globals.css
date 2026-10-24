@@ -449,11 +449,12 @@
     gap: 1.4rem;
   }
 
-  .intro-mark {
-    width: 2.6rem;
+  .intro-logo {
+    width: min(15rem, 62vw);
     overflow: visible;
   }
 
+  /* The monogram's two shapes rise in turn, then the name fades up. */
   .intro-bar {
     transform-box: fill-box;
     transform-origin: bottom;
@@ -462,15 +463,18 @@
   }
 
   .intro-bar-2 {
-    animation-delay: 280ms;
+    animation-delay: 260ms;
   }
 
-  .intro-word {
-    font-size: 1.05rem;
-    letter-spacing: 0.5em;
-    padding-left: 0.5em;
+  .intro-wordmark,
+  .intro-subline {
     opacity: 0;
-    animation: intro-word 800ms var(--ease-out-soft) 420ms forwards;
+    transform: translateY(14px);
+    animation: intro-rise 700ms var(--ease-out-soft) 480ms forwards;
+  }
+
+  .intro-subline {
+    animation-delay: 620ms;
   }
 
   .intro-line {
@@ -515,14 +519,10 @@
   }
 }
 
-@keyframes intro-word {
-  from {
-    opacity: 0;
-    letter-spacing: 0.2em;
-  }
+@keyframes intro-rise {
   to {
     opacity: 1;
-    letter-spacing: 0.5em;
+    transform: none;
   }
 }
 
@@ -689,9 +689,11 @@
     transform: none;
   }
 
-  .intro-word {
+  .intro-wordmark,
+  .intro-subline {
     animation: none;
     opacity: 1;
+    transform: none;
   }
 
   .mobile-nav {

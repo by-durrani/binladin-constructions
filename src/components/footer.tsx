@@ -14,7 +14,7 @@ export function Footer() {
     <footer className="border-t border-line bg-surface">
       <div className="shell grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1fr_1.3fr] lg:py-20">
         <div>
-          <Logo />
+          <Logo className="h-14" />
           <p className="mt-6 max-w-xs text-sm leading-relaxed font-light text-muted">
             {site.description}
           </p>
@@ -83,7 +83,7 @@ export function Footer() {
       <div className="border-t border-line">
         <div className="shell flex flex-col gap-2 pt-6 pb-28 text-xs tracking-[0.16em] text-muted uppercase sm:flex-row sm:justify-between md:pb-6">
           <p>© {site.fullName}</p>
-          <p>{site.city} · Built to last</p>
+          <p>{site.city} · Building better tomorrows</p>
         </div>
       </div>
     </footer>

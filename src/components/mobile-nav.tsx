@@ -1,9 +1,9 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type ComponentType, type SVGProps, Suspense } from "react";
+import { Monogram } from "@/components/brand";
 import {
   ChatIcon,
   GridIcon,
@@ -39,16 +39,10 @@ function Items({ pathname }: { pathname: string | null }) {
         aria-label={`${site.fullName} — home`}
         aria-current={home ? "page" : undefined}
         className={`flex size-11 shrink-0 items-center justify-center rounded-full transition-colors duration-300 ${
-          home ? "bg-ink" : "hover:bg-ink/5"
+          home ? "bg-ink text-surface" : "text-ink hover:bg-ink/5"
         }`}
       >
-        <Image
-          src="/bin-ladin.svg"
-          alt=""
-          width={12}
-          height={22}
-          className={home ? "invert" : ""}
-        />
+        <Monogram className="h-5 w-auto" />
       </Link>
       {items.map(({ href, label, Icon }) => {
         const active = isActive(pathname, href);

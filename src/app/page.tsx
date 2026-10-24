@@ -21,6 +21,7 @@ const structuredData = {
   telephone: site.phone,
   email: site.email,
   image: site.heroImage.src,
+  logo: new URL("/brand/logo-stacked.svg", site.url).toString(),
   address: {
     "@type": "PostalAddress",
     streetAddress: site.address,

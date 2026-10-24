@@ -10,7 +10,13 @@ export const site = {
   whatsapp: "923017758065",
   email: "binladinconstructions@gmail.com",
   address: "204, Salam Tower, Block A, Faisal Town, Islamabad 44000",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+  // Absolute links (share previews, sitemap) need the live address. Vercel
+  // provides its production domain at build time when this isn't set.
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    (process.env.VERCEL_PROJECT_PRODUCTION_URL
+      ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
+      : "http://localhost:3000"),
   // Swap for a photo of your own best project once you have one.
   heroImage: {
     src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=2400&q=80",

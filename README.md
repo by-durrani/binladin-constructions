@@ -32,6 +32,19 @@ All text and data is in `src/data/` — you rarely need to touch the pages.
 - `src/data/projects.ts` — the portfolio.
 - `src/data/services.ts` — services, process steps and FAQs.
 
+## Logo and brand files
+
+The logo was traced to vectors from the brand sheet's primary logo.
+
+- `src/components/brand-paths.ts` — the shapes (monogram, wordmark,
+  "CONSTRUCTIONS"). Replace these with the designer's master SVG paths when
+  available; everything else follows.
+- `src/components/brand.tsx` — `Monogram`, `LogoHorizontal` and `LogoStacked`,
+  drawn in the current text colour.
+- `public/brand/` — standalone SVGs (dark and white) for use elsewhere.
+- `src/app/icon.svg`, `src/app/apple-icon.png`, `src/app/opengraph-image.png`
+  — browser tab icon, iPhone home-screen icon and link-preview image.
+
 ## Adding a project
 
 1. Put the photos in `public/projects/<slug>/`, for example
