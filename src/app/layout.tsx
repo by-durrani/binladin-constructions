@@ -32,7 +32,6 @@ export const metadata: Metadata = {
     type: "website",
     siteName: site.fullName,
     locale: "en_PK",
-    images: [{ url: site.heroImage.src, alt: site.heroImage.alt }],
   },
 };
 
